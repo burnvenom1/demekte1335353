@@ -2,15 +2,17 @@
   "name": "hepsiburada-login-project",
   "version": "1.0.0",
   "description": "Hepsiburada login automation",
-  "main": "hepsiburada-login.js",
+  "main": "server.js",
+  "type": "commonjs",
   "scripts": {
     "start-server": "node server.js",
     "login": "node test-login.js"
   },
   "dependencies": {
-    "@playwright/test": "^1.38.0",
-    "node-fetch": "^3.3.2",
     "express": "^4.18.2",
-    "cors": "^2.8.5"
+    "cors": "^2.8.5",
+    "body-parser": "^1.20.2",
+    "node-fetch": "^3.3.2",
+    "playwright-core": "^1.38.0"
   }
 }
