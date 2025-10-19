@@ -6,7 +6,7 @@ const { chromium } = require('playwright-core'); // veya 'playwright' istersen d
 const { randomUUID } = require('crypto');
 const fs = require('fs');
 const path = require('path');
-const fetch = require('node-fetch'); // package.json'a ekle (node-fetch@2 veya uygun sürüm)
+const response = await fetch(url); // package.json'a ekle (node-fetch@2 veya uygun sürüm)
 
 const OUTPUT_DIR = path.join(__dirname, 'ciktilar');
 if (!fs.existsSync(OUTPUT_DIR)) fs.mkdirSync(OUTPUT_DIR, { recursive: true });
