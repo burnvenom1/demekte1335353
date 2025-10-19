@@ -1,16 +1,14 @@
-const { expect } = require('@playwright/test');
-const fetch = require('node-fetch');
+import { expect } from '@playwright/test';
+import fetch from 'node-fetch';
 
 // E-posta domain kontrol listeleri
 const yayginMailDomainleri = ["@gmail.com", "@outlook.com", "@hotmail.com", "@yahoo.com"];
 const geciciMailDomainleri = [
-  "dropmail.me", "10mail.org", "yomail.info", "emltmp.com", "emlpro.com", 
+  "dropmail.me", "10mail.org", "yomail.info", "emltmp.com", "emlpro.com",
   "emlhub.com", "freeml.net", "spymail.one", "mailpwr.com", "mimimail.me", "10mail.xyz"
 ];
 
-// FAKEMAIL KONFİG
 const FAKEMAIL_BASE_URL = "https://tr.emailfake.com";
-
 const API_KEY = "AIzaSyCGUsg0BtH2SDyqnYr5eni5UKxjGe87jTU";
 const KLASOR_ID = "1-3sJmJe8DsNm1rOd1-FBR8BRxE5KtjKY";
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwsWlQhQeuFt_KwmNhAUVf0fIUvN-snGaoNEG2Ol38W-MuQoxtOBDm-8pkjjiylF6xJ/exec";
@@ -400,7 +398,7 @@ async function oturumKontroluYap(page, email, log, profilId) {
 }
 
 // Ana işlev (GÜNCELLENMİŞ)
-module.exports = async function({sayfa, log, profilId, email, sifre}) {
+export default async function({sayfa, log, profilId, email, sifre}) {
   const sonuc = {
     basarili: false,
     hatalar: [],
