@@ -1,0 +1,36 @@
+name: Playwright - Chrome Form Sender
+on:
+  workflow_dispatch: {}
+
+jobs:
+  send-form:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360 # 6 saat
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install system deps & Google Chrome
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget gnupg ca-certificates
+          wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+          echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+
+      - name: Install npm dependencies
+        run: |
+          npm ci
+          npx playwright install --with-deps
+
+      - name: Run Playwright script
+        env:
+          HEADLESS: ${{ secrets.HEADLESS || 'true' }}
+          EMAIL_TO_SEND: ${{ secrets.EMAIL_TO_SEND }}
+        run: |
+          node index.js
