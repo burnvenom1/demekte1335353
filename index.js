@@ -1,12 +1,12 @@
 // index.js
 // Birleştirilmiş: senin verdiğin tüm oturum / mail / cerez fonksiyonları korunmuştur.
-// NOT: fingerprint/evade spoofing fonksiyonları KALDIRILDI ve yerine PLACEHOLDER kondu.
+// NOT: fingerprint/evade spoofing fonksiyonları KALDIRILDI ve yerine PLACEHOLDER fonksiyonları kaldırıldı.
 
 const { chromium } = require('playwright-core'); // veya 'playwright' istersen değiştir
 const { randomUUID } = require('crypto');
 const fs = require('fs');
 const path = require('path');
-const response = await fetch(url); // package.json'a ekle (node-fetch@2 veya uygun sürüm)
+const fetch = require('node-fetch'); // package.json'a ekle (node-fetch@2 veya uygun sürüm)
 
 const OUTPUT_DIR = path.join(__dirname, 'ciktilar');
 if (!fs.existsSync(OUTPUT_DIR)) fs.mkdirSync(OUTPUT_DIR, { recursive: true });
@@ -22,24 +22,11 @@ const KLASOR_ID = process.env.DRIVE_FOLDER_ID || '';
 const APPS_SCRIPT_URL = process.env.APPS_SCRIPT_URL || '';
 const FAKEMAIL_BASE_URL = process.env.FAKEMAIL_BASE_URL || 'https://tempmail.plus';
 
-// ---------- Placeholder: spoofing/evade kodları burada OMITTED ----------
-// Aşağıdaki fonksiyonlar (WebGL/Canvas/Audio/Hardware/Webdriver/Plugin spoofing)
-// güvenlik/etik sebeplerle burada **eklenmedi**. Eğer test ortamında kendin ekleyeceksen,
-// buraya kendi kodunu koyabilirsin. Örnek placeholder fonksiyonlar:
-function getWebGLSpoofScript(seed) { return '/* SPOOFING OMITTED */'; }
-function getCanvasSpoofScript(seed) { return '/* SPOOFING OMITTED */'; }
-function getAudioContextSpoofScript(seed) { return '/* SPOOFING OMITTED */'; }
-function getHardwareInfoSpoofScript(seed) { return '/* SPOOFING OMITTED */'; }
-function getWebdriverSpoofScript() { return '/* SPOOFING OMITTED */'; }
-function getPluginAndPermissionsSpoofScript() { return '/* SPOOFING OMITTED */'; }
-// -------------------------------------------------------------------
-
 // Basit logger (senin log.kaydet çağrılarına uyumlu)
 const log = {
   async kaydet(profilId, mesaj) {
     const t = new Date().toISOString();
     console.log(`[${t}] [${profilId}] ${mesaj}`);
-    // opsiyonel: dosyaya yazma eklenebilir
   }
 };
 
@@ -62,7 +49,7 @@ async function hepsiburadaGirisSayfasinaGit(page) {
   }
 }
 
-// Yaygın/Geçici/Fakemail kontrol fonksiyonları (senin versiyonun korunmuştur)
+// Yaygın/Geçici/Fakemail kontrol fonksiyonları
 const yayginMailDomainleri = ['gmail.com','hotmail.com','yahoo.com','outlook.com','icloud.com'];
 function yayginMailMi(email) {
   return yayginMailDomainleri.some(domain => email.toLowerCase().endsWith(domain));
@@ -138,44 +125,7 @@ async function cerezleriYukleVeDogrula(page, email) {
   return true;
 }
 
-// Fakemail'den tek seferlik giriş linkini almak (özet, senin mantığın korundu)
-async function fakemaildenLinkAl(page, email) {
-  if (!FAKEMAIL_BASE_URL) throw new Error('FAKEMAIL_BASE_URL ayarlı değil');
-  await page.goto(`${FAKEMAIL_BASE_URL}/${email}`, { waitUntil: 'networkidle', timeout: 60000 });
-
-  // Burada senin sağladığın bekleme / seçim adımlarını koru
-  await page.waitForTimeout(1500);
-  // Örnek: metin bulma ve link alma (senin koduna göre uyarla)
-  const linkEl = await page.$('a:has-text("Tek Seferlik Giriş Yap"), a:has-text("Tek seferlik giriş")');
-  if (!linkEl) throw new Error('Giriş linki bulunamadı (fakemail)');
-  const href = await linkEl.getAttribute('href');
-  return href;
-}
-
-// mailListesiAl, mailDetayAl, mailSil (tempmail API örneğin korunmuş)
-async function mailListesiAl(email) {
-  const apiUrl = `https://tempmail.plus/api/mails?email=${email}&limit=10&epin=`;
-  const response = await fetch(apiUrl);
-  if (!response.ok) throw new Error(`Mail listesi alınamadı: ${response.status}`);
-  const veri = await response.json();
-  return veri.mail_list || [];
-}
-
-async function mailDetayAl(mailId, email) {
-  const apiUrl = `https://tempmail.plus/api/mails/${mailId}?email=${email}&epin=`;
-  const response = await fetch(apiUrl);
-  if (!response.ok) throw new Error(`Mail detay alınamadı: ${response.status}`);
-  return await response.json();
-}
-
-async function mailSil(mailId, email) {
-  const apiUrl = `https://tempmail.plus/api/mails/${mailId}?email=${email}&epin=`;
-  const response = await fetch(apiUrl, { method: 'DELETE' });
-  if (!response.ok) throw new Error(`Mail silinemedi: ${response.status}`);
-  return true;
-}
-
-// maildenGirisLinkiAlVeSil (senin regex ve akış mantığın korunmuş)
+// Fakemail'den tek seferlik giriş linkini almak
 async function maildenGirisLinkiAlVeSil(email, log = console) {
   const baslangic = Date.now();
   const kontrolEdilenler = new Set();
@@ -217,7 +167,30 @@ async function maildenGirisLinkiAlVeSil(email, log = console) {
   throw new Error("1 dakikada uygun mail bulunamadı");
 }
 
-// Oturum kontrolu (senin fonksiyonun korunmuş)
+// mailListesiAl, mailDetayAl, mailSil
+async function mailListesiAl(email) {
+  const apiUrl = `https://tempmail.plus/api/mails?email=${email}&limit=10&epin=`;
+  const response = await fetch(apiUrl);
+  if (!response.ok) throw new Error(`Mail listesi alınamadı: ${response.status}`);
+  const veri = await response.json();
+  return veri.mail_list || [];
+}
+
+async function mailDetayAl(mailId, email) {
+  const apiUrl = `https://tempmail.plus/api/mails/${mailId}?email=${email}&epin=`;
+  const response = await fetch(apiUrl);
+  if (!response.ok) throw new Error(`Mail detay alınamadı: ${response.status}`);
+  return await response.json();
+}
+
+async function mailSil(mailId, email) {
+  const apiUrl = `https://tempmail.plus/api/mails/${mailId}?email=${email}&epin=`;
+  const response = await fetch(apiUrl, { method: 'DELETE' });
+  if (!response.ok) throw new Error(`Mail silinemedi: ${response.status}`);
+  return true;
+}
+
+// Oturum kontrolu
 async function oturumKontroluYap(page, email, log, profilId) {
   const sonuc = { basarili: false, kullanilanYontem: '', hatalar: [] };
   await log.kaydet(profilId, 'Hesap bilgileri sayfasına gidiliyor...');
@@ -251,7 +224,6 @@ async function oturumKontroluYap(page, email, log, profilId) {
     await log.kaydet(profilId, `Yöntem başarısız: Email Input Değeri Kontrolü - ${error.message}`);
   }
 
-  // Sayfa metni taraması
   try {
     const sayfaMetni = await page.content();
     if (sayfaMetni.includes(beklenenMaskeli)) {
@@ -272,7 +244,7 @@ async function oturumKontroluYap(page, email, log, profilId) {
   return sonuc;
 }
 
-// ------------------ Ana modül: senin module.exports fonksiyonu (korundu) ------------------
+// ------------------ Ana modül ------------------
 module.exports = async function({ sayfa, log, profilId, email, sifre }) {
   const sonuc = { basarili: false, hatalar: [], ekstraBilgiler: [] };
 
@@ -331,23 +303,33 @@ module.exports = async function({ sayfa, log, profilId, email, sifre }) {
       sonuc.hatalar.push(`Şifre ile giriş hatası: ${hata.message}`);
     }
 
-    // 4) Geçici mail veya fakemail ise tek seferlik link ile giriş dene
+    // 4) Fakemail veya geçici mail ise tek seferlik link ile giriş
     if (geciciMailMi(email) || fakemailMi(email)) {
-      await log.kaydet(profilId, 'Geçici e-posta/fakemail domaini - sipariş takibi yöntemi deneniyor');
-
+      await log.kaydet(profilId, 'Geçici e-posta/fakemail domaini - tek seferlik link yöntemi deneniyor');
       await sayfa.context().clearCookies();
       await log.kaydet(profilId, 'Çerezler temizlendi');
       await hepsiburadaGirisSayfasinaGit(sayfa);
-      await geciciMailGirisIslemleri(sayfa, email, profilId, log);
 
-      const oturum = await oturumKontroluYap(sayfa, email, log, profilId);
-      sonuc.basarili = oturum.basarili;
-      if (sonuc.basarili) {
-        await log.kaydet(profilId, 'Geçici mail/fakemail ile giriş başarılı, çerezler kaydediliyor');
-        const cookies = await sayfa.context().cookies();
-        await cerezleriGoogleDriveKaydet(email, cookies);
-        sonuc.ekstraBilgiler.push('Giriş yöntemi: Tek seferlik link');
-        return sonuc;
+      try {
+        const tekSeferlikLink = await maildenGirisLinkiAlVeSil(email);
+        if (!tekSeferlikLink) throw new Error('Fakemail linki alınamadı');
+
+        await log.kaydet(profilId, `Tek seferlik giriş linki bulundu: ${tekSeferlikLink}`);
+        await sayfa.goto(tekSeferlikLink, { waitUntil: 'networkidle', timeout: 30000 });
+        await sayfa.waitForTimeout(3000);
+
+        const oturum = await oturumKontroluYap(sayfa, email, log, profilId);
+        sonuc.basarili = oturum.basarili;
+        if (sonuc.basarili) {
+          await log.kaydet(profilId, 'Fakemail/tempmail ile giriş başarılı, çerezler kaydediliyor');
+          const cookies = await sayfa.context().cookies();
+          await cerezleriGoogleDriveKaydet(email, cookies);
+          sonuc.ekstraBilgiler.push('Giriş yöntemi: Tek seferlik link');
+          return sonuc;
+        }
+      } catch (hata) {
+        sonuc.hatalar.push(`Fakemail/tempmail yöntemi başarısız: ${hata.message}`);
+        await log.kaydet(profilId, `HATA: Fakemail/tempmail yöntemi - ${hata.message}`);
       }
     } else if (yayginMailMi(email)) {
       throw new Error('Yaygın mail domaini için çerezlerle giriş başarısız oldu - alternatif yöntem yok');
@@ -377,8 +359,6 @@ module.exports = async function({ sayfa, log, profilId, email, sifre }) {
 };
 
 // ------------------ ANA ÇALIŞTIRMA (örnek) ------------------
-// Eğer index.js'i doğrudan node ile çalıştırırsan aşağıdaki blok çalışır.
-// CI/Workflow tarafında bunu kullanmak istersen, environment ile run et.
 if (require.main === module) {
   (async () => {
     const chromePathCandidates = [
@@ -400,11 +380,8 @@ if (require.main === module) {
     const page = await context.newPage();
 
     try {
-      // Öğeyi çağır: module.exports beklediği paramlerle çağrıyoruz
       const result = await module.exports({ sayfa: page, log, profilId: PROFILE_ID, email: EMAIL, sifre: PASSWORD });
       console.log('İşlem sonucu:', JSON.stringify(result, null, 2));
-
-      // Opsiyonel: raporları/ekran görüntülerini ciktilar klasörüne taşı veya ziple vs.
     } catch (err) {
       console.error('Çalıştırma hatası:', err);
     } finally {
