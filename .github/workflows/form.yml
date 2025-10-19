@@ -1,37 +1,28 @@
-name: Hepsiburada Test
+name: Node.js CI
+
 
 on:
-  workflow_dispatch:
+push:
+branches: [ main ]
+pull_request:
+branches: [ main ]
+
 
 jobs:
-  run-test:
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
+build:
+runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
+strategy:
+matrix:
+node-version: [20.x]
 
-      - name: Install dependencies
-        run: |
-          npm install
 
-      - name: Run test script
-        env:
-          HEADLESS: 'true'             # debug için 'false' yapabilirsin (lokalde daha faydalı)
-          EMAIL_TO_SEND: 'deneme@example.com'
-          # CHROME_PATH: '/custom/path/to/chrome' # isteğe bağlı: özel chrome yolu
-        run: |
-          node index.js
-
-      - name: Upload screenshots & report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-output
-          path: ciktilar/**/*
+steps:
+- uses: actions/checkout@v3
+- name: Use Node.js ${{ matrix.node-version }}
+uses: actions/setup-node@v3
+with:
+node-version: ${{ matrix.node-version }}
+- run: npm install
+- run: npm start
