@@ -1,23 +1,29 @@
 const express = require('express');
 const cors = require('cors');
-const app = express();
-const port = 3000;
+const fetch = require('node-fetch');
+const hepsiburadaLogin = require('./hepsiburada-login');
 
+const app = express();
 app.use(cors());
 app.use(express.json());
 
-let mailList = [
-    "deneme1@tempmail.plus",
-    "deneme2@tempmail.plus"
-];
-let index = 0;
+const PORT = process.env.PORT || 3000;
 
-app.get('/getMail', (req, res) => {
-    if (index >= mailList.length) index = 0;
-    const mail = mailList[index++];
-    res.json({ email: mail });
+app.post('/login', async (req, res) => {
+  const { email, sifre, profilId } = req.body;
+
+  const log = {
+    kaydet: async (id, mesaj) => console.log(`[${id}] ${mesaj}`)
+  };
+
+  try {
+    const sonuc = await hepsiburadaLogin({ sayfa: null, log, profilId, email, sifre });
+    res.json(sonuc);
+  } catch (hata) {
+    res.status(500).json({ basarili: false, hata: hata.message });
+  }
 });
 
-app.listen(port, () => {
-    console.log(`Mail serveri çalışıyor: http://localhost:${port}`);
+app.listen(PORT, () => {
+  console.log(`Server çalışıyor: http://localhost:${PORT}`);
 });
