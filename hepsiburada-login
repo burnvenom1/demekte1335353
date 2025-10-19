@@ -1,0 +1,19 @@
+const fetch = require('node-fetch');
+
+// ---------- SERVER ÜZERİNDEN MAIL AL ----------
+async function mailiServerdenAl() {
+    const res = await fetch('http://localhost:3000/getMail');
+    if (!res.ok) throw new Error(`Mail server hatası: ${res.status}`);
+    const data = await res.json();
+    if (!data.email) throw new Error('Mail server geçerli mail döndürmedi');
+    return data.email;
+}
+
+module.exports = async function({sayfa, log, profilId, sifre}) {
+    const email = await mailiServerdenAl();
+    await log.kaydet(profilId, `Server üzerinden mail alındı: ${email}`);
+
+    // Ana core scripti çalıştır
+    const loginCore = require('./hepsiburada-login-core');
+    return await loginCore({sayfa, log, profilId, email, sifre});
+};
