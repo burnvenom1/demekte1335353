@@ -1,16 +1,14 @@
 {
-  "name": "hepsiburada-login-project",
-  "version": "1.0.0",
-  "description": "Hepsiburada login automation",
-  "main": "index.js",
-  "type": "commonjs",
-  "scripts": {
-    "start": "node index.js"
-  },
-  "dependencies": {
-    "express": "^4.18.2",
-    "cors": "^2.8.5",
-    "body-parser": "^1.20.2",
-    "playwright": "^1.38.0"
-  }
+"name": "hepsiburada-login",
+"version": "1.0.0",
+"description": "Hepsiburada giriş otomasyonu",
+"main": "index.js",
+"type": "module",
+"scripts": {
+"start": "node index.js"
+},
+"dependencies": {
+"node-fetch": "^3.3.2",
+"@playwright/test": "^1.41.0"
+}
 }
