@@ -1,14 +1,12 @@
 {
-"name": "hepsiburada-login",
-"version": "1.0.0",
-"description": "Hepsiburada giriş otomasyonu",
-"main": "index.js",
-"type": "module",
-"scripts": {
-"start": "node index.js"
-},
-"dependencies": {
-"node-fetch": "^3.3.2",
-"@playwright/test": "^1.41.0"
-}
+  "name": "hepsiburada-login",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@playwright/test": "^1.43.0",
+    "node-fetch": "^3.4.0"
+  }
 }
