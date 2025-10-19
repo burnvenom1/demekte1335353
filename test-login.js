@@ -1,20 +1,17 @@
-const playwright = require('playwright');
-const hepsiburadaLogin = require('./hepsiburada-login');
+const fetch = require('node-fetch');
 
-(async () => {
-    const browser = await playwright.chromium.launch({ headless: false });
-    const context = await browser.newContext();
-    const page = await context.newPage();
+const API_URL = 'http://localhost:3000/login';
+const testData = {
+  email: 'test@example.com',
+  sifre: 'password123',
+  profilId: 'test123'
+};
 
-    const log = {
-        kaydet: async (profilId, mesaj) => console.log(`[${profilId}] ${mesaj}`)
-    };
-
-    const profilId = 'test-profil';
-    const sifre = 'Sifre123';
-
-    const sonuc = await hepsiburadaLogin({ sayfa: page, log, profilId, sifre });
-    console.log('Giriş sonucu:', sonuc);
-
-    await browser.close();
-})();
+fetch(API_URL, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(testData)
+})
+.then(res => res.json())
+.then(data => console.log(data))
+.catch(err => console.error(err));
