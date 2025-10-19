@@ -74,7 +74,7 @@ function findSystemChrome() {
     await page.addInitScript(getPluginAndPermissionsSpoofScript());
 
     // Test hedefi
-    const target = 'https://giris.hepsiburada.com/';
+    const target = 'https://giris.hepsiburada.com/?ReturnUrl=https%3A%2F%2Foauth.hepsiburada.com%2Fconnect%2Fauthorize%2Fcallback%3Fclient_id%3DSPA%26redirect_uri%3Dhttps%253A%252F%252Fwww.hepsiburada.com%252Fuyelik%252Fcallback%26response_type%3Dcode%26scope%3Dopenid%2520profile%26state%3Df883eaadc71d42c8bfe3aa90bc07585a%26code_challenge%3DI4Ihs_2x7BPCMgYoGd7YrazWUqIYgxTzIGMQVovpJfg%26code_challenge_method%3DS256%26response_mode%3Dquery%26customizeSegment%3DORDERS%26ActivePage%3DPURE_LOGIN%26oidcReturnUrl%3D%252Fsiparislerim';
     console.log('Navigating to', target);
     await page.goto(target, { waitUntil: 'domcontentloaded', timeout: 60000 });
 
