@@ -1,11 +1,11 @@
-const http = require('http');
+import http from 'http';
+import girisIslemleri from './index.js';
+
 const PORT = process.env.PORT || 3000;
 
-
-const server = http.createServer((req, res) => {
-res.writeHead(200, {'Content-Type': 'text/plain'});
-res.end('Server çalışıyor');
+const server = http.createServer(async (req, res) => {
+  res.writeHead(200, {'Content-Type': 'text/plain'});
+  res.end('Server çalışıyor');
 });
-
 
 server.listen(PORT, () => console.log(`Server ${PORT} portunda çalışıyor`));
