@@ -1,11 +1,12 @@
 {
-  "name": "playwright-core-system-chrome-test",
+  "name": "hepsiburada-bot",
   "version": "1.0.0",
-  "private": true,
+  "type": "module",
   "scripts": {
     "start": "node index.js"
   },
   "dependencies": {
-    "playwright-core": "^1.40.0"
+    "playwright-core": "^1.43.0",
+    "node-fetch": "^3.4.0"
   }
 }
