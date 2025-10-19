@@ -5,6 +5,7 @@ on:
 jobs:
   test-page:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -17,5 +18,11 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run index.js
+      - name: Run Playwright script
         run: node index.js
+
+      - name: Upload screenshot artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: hepsiburada-screenshot
+          path: hepsiburada_test_*.png
