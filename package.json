@@ -2,10 +2,15 @@
   "name": "playwright-core-system-chrome",
   "version": "1.0.0",
   "private": true,
+  "description": "Playwright-core script using system Chrome with screenshot capture",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "node index.js"
   },
   "dependencies": {
     "playwright-core": "^1.40.0"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }
