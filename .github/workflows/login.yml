@@ -27,11 +27,17 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      # 4️⃣ Npm dependencies (deterministik)
+      # 4️⃣ Lockfile senkronizasyon kontrolü ve güncelleme
+      - name: Ensure lockfile is up to date
+        run: |
+          npm install
+          git diff --exit-code package-lock.json || (echo "Lockfile updated. Commit and push before re-running CI." && exit 1)
+
+      # 5️⃣ Npm dependencies (deterministik)
       - name: Install npm dependencies
         run: npm ci
 
-      # 5️⃣ Sistem Chrome kur
+      # 6️⃣ Sistem Chrome kur
       - name: Ensure Google Chrome is installed (system)
         run: |
           sudo apt-get update
@@ -45,13 +51,13 @@ jobs:
             echo "Chrome/Chromium already present"
           fi
 
-      # 6️⃣ Playwright script çalıştır
+      # 7️⃣ Playwright script çalıştır
       - name: Run playwright-core script (use system chrome)
         env:
           HEADLESS: ${{ secrets.HEADLESS || 'true' }}
         run: node index.js
 
-      # 7️⃣ Screenshot artifact olarak yükle
+      # 8️⃣ Screenshot artifact olarak yükle
       - name: Upload screenshot artifact
         uses: actions/upload-artifact@v4
         with:
