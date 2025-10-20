@@ -27,7 +27,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      # 4️⃣ Npm dependencies (deterministik, package-lock.json üzerinden)
+      # 4️⃣ Npm dependencies (deterministik)
       - name: Install npm dependencies
         run: npm ci
 
