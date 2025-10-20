@@ -16,11 +16,21 @@ jobs:
         with:
           node-version: 20
 
+      - name: Cache npm modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install npm dependencies
+        run: npm install
+
       - name: Ensure Google Chrome is installed (system)
         run: |
           sudo apt-get update
           sudo apt-get install -y wget gnupg ca-certificates
-          # Install Google Chrome stable if not present
           if ! command -v google-chrome-stable &> /dev/null && ! command -v chromium-browser &> /dev/null && ! command -v chromium &> /dev/null; then
             wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
             echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
@@ -29,9 +39,6 @@ jobs:
           else
             echo "Chrome/Chromium already present"
           fi
-
-      - name: Install npm dependencies
-        run: npm ci
 
       - name: Run playwright-core script (use system chrome)
         env:
