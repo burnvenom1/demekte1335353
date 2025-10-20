@@ -8,25 +8,30 @@ jobs:
     timeout-minutes: 60
 
     steps:
+      # 1️⃣ Repo'yu checkout et
       - name: Checkout repo
         uses: actions/checkout@v3
 
+      # 2️⃣ Node.js kur
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 20
 
+      # 3️⃣ Npm cache kullan
       - name: Cache npm modules
         uses: actions/cache@v3
         with:
           path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('package.json') }}
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
 
+      # 4️⃣ Npm dependencies (deterministik, package-lock.json üzerinden)
       - name: Install npm dependencies
-        run: npm install
+        run: npm ci
 
+      # 5️⃣ Sistem Chrome kur
       - name: Ensure Google Chrome is installed (system)
         run: |
           sudo apt-get update
@@ -40,11 +45,13 @@ jobs:
             echo "Chrome/Chromium already present"
           fi
 
+      # 6️⃣ Playwright script çalıştır
       - name: Run playwright-core script (use system chrome)
         env:
           HEADLESS: ${{ secrets.HEADLESS || 'true' }}
         run: node index.js
 
+      # 7️⃣ Screenshot artifact olarak yükle
       - name: Upload screenshot artifact
         uses: actions/upload-artifact@v4
         with:
