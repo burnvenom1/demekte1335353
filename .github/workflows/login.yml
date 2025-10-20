@@ -27,13 +27,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      # 4️⃣ Lockfile senkronizasyon kontrolü ve güncelleme
+      # 4️⃣ Lockfile senkron kontrolü ve update (opsiyonel)
       - name: Ensure lockfile is up to date
         run: |
           npm install
           git diff --exit-code package-lock.json || (echo "Lockfile updated. Commit and push before re-running CI." && exit 1)
 
-      # 5️⃣ Npm dependencies (deterministik)
+      # 5️⃣ Deterministik kurulum
       - name: Install npm dependencies
         run: npm ci
 
