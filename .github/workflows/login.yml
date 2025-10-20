@@ -8,9 +8,11 @@ jobs:
     timeout-minutes: 60
 
     steps:
-      # 1️⃣ Repo'yu checkout et
+      # 1️⃣ Repo'yu checkout et (git push için token ekliyoruz)
       - name: Checkout repo
         uses: actions/checkout@v3
+        with:
+          persist-credentials: true  # Gerekli: push yapabilmek için
 
       # 2️⃣ Node.js kur
       - name: Setup Node.js
@@ -27,11 +29,20 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      # 4️⃣ Lockfile senkron kontrolü ve update (opsiyonel)
-      - name: Ensure lockfile is up to date
+      # 4️⃣ Lockfile güncelle ve commit/push (otomatik)
+      - name: Ensure lockfile is up to date and commit
         run: |
           npm install
-          git diff --exit-code package-lock.json || (echo "Lockfile updated. Commit and push before re-running CI." && exit 1)
+          if ! git diff --exit-code package-lock.json; then
+            echo "Lockfile updated. Committing changes..."
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add package-lock.json
+            git commit -m "chore: update package-lock.json from workflow"
+            git push
+          else
+            echo "Lockfile is already up to date."
+          fi
 
       # 5️⃣ Deterministik kurulum
       - name: Install npm dependencies
