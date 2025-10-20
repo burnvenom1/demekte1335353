@@ -1,12 +1,11 @@
 {
-  "name": "hepsiburada-login",
+  "name": "playwright-chrome-form",
   "version": "1.0.0",
-  "type": "module",
+  "private": true,
   "scripts": {
     "start": "node index.js"
   },
   "dependencies": {
-    "@playwright/test": "^1.43.0",
-    "node-fetch": "^3.3.2"
+    "playwright": "^1.40.0"
   }
 }
