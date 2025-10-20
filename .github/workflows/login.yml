@@ -1,0 +1,28 @@
+name: Hepsiburada Login
+
+on:
+  workflow_dispatch:
+    inputs:
+      email:
+        description: 'E-posta adresi'
+        required: true
+      sifre:
+        description: 'Şifre'
+        required: false
+
+jobs:
+  login:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm install
+      - name: Run login script
+        run: node index.js
+        env:
+          EMAIL: ${{ github.event.inputs.email }}
+          SIFRE: ${{ github.event.inputs.sifre }}
